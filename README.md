@@ -1,57 +1,58 @@
-# Королівська гра Ур
+# Royal Game of Ur
 
-Браузерна реалізація шумерської настільної гонки (~2600 р. до н.е.) за реконструкцією
-правил Ірвінга Фінкеля (Британський музей).
+A browser implementation of the Sumerian race game (~2600 BC), following Irving Finkel's
+rules reconstruction (British Museum).
 
-Опис гри та повні правила — у нотатках Obsidian:
-`myVault/Hobby/Games/Royal Game of Ur/` (задача: `myVault/Projects/GameUr/Task.md`).
+Game description and full rules live in Obsidian notes:
+`myVault/Hobby/Games/Royal Game of Ur/` (task: `myVault/Projects/GameUr/Task.md`).
 
-## Запуск
+## Running
 
-Статичний сайт без збірки — достатньо будь-якого HTTP-сервера:
+A static site with no build step — any HTTP server will do:
 
 ```
 python -m http.server 8641
 # → http://localhost:8641
 ```
 
-Працює на десктопі та мобільних (Android/iOS), керування — тапом/кліком.
+Works on desktop and mobile (Android/iOS); controlled by tap/click.
 
-## Можливості
+## Features
 
-- Режими: гра на двох (hotseat) і проти компʼютера (евристичний ШІ).
-- Повні правила Фінкеля: 7 фішок, 4 тетраедральні кубики (0–4), збивання на спільному
-  ряду, розетки ✿ 4/8/14 (+хід, захист), блокувальна центральна розетка, точний кидок
-  для зняття фішки.
-- Автозбереження стану в `localStorage` — гру можна перервати та продовжити.
-- Дошка — SVG у стилі оригінального артефакта з Ура: плакетки з «мушлі»,
-  лазуритові й червоні інкрустації, 5 розеток, «очі», крапкові візерунки;
-  фішки — білі та чорні диски з 5 крапками, як знайдені при розкопках.
+- Modes: two-player hotseat and versus the computer (heuristic AI).
+- Full Finkel ruleset: 7 pieces, 4 tetrahedral dice (0–4), capturing on the shared
+  row, rosettes ✿ 4/8/14 (extra roll, protection), blocking central rosette, exact
+  roll required to bear off.
+- Auto-saves game state to `localStorage` — an interrupted match resumes on reload.
+- Board rendered as SVG in the style of the original artifact excavated at Ur:
+  shell plaques, lapis lazuli and red limestone inlays, 5 rosettes, "eyes" and
+  dotted patterns; pieces are white and black discs with 5 dots, as found in the
+  excavations.
 
-## Структура
+## Structure
 
-- `index.html` — розмітка, діалоги (нова гра, правила)
-- `css/style.css` — стилі, адаптивність
-- `js/game.js` — рушій правил (стан, легальні ходи, застосування ходу)
-- `js/board.js` — геометрія та SVG-рендер дошки
-- `js/ai.js` — евристичний ШІ (грає чорними)
-- `js/main.js` — UI, взаємодія, збереження
+- `index.html` — markup, dialogs (new game, rules)
+- `css/style.css` — styles, responsive layout (portrait/landscape)
+- `js/game.js` — rules engine (state, legal moves, move application)
+- `js/board.js` — board geometry and SVG rendering
+- `js/ai.js` — heuristic AI (plays black)
+- `js/main.js` — UI, interaction, persistence
 
-## Тести
+## Tests
 
-Рушій правил покритий тестами на Node.js без зовнішніх залежностей:
+The rules engine is covered by Node.js tests with no external dependencies:
 
 ```
 node --test
-# або, якщо npm доступний:
+# or, if npm is available:
 npm test
 ```
 
-Тести лежать у `tests/game.test.js` і перевіряють стартовий стан, кидки, легальні ходи,
-збивання, блок центральної розетки, точний вихід з дошки, додатковий хід на розетці та перемогу.
+Tests live in `tests/game.test.js` and cover the initial state, dice rolls, legal
+moves, capturing, the central-rosette block, exact bear-off, the extra roll on a
+rosette, probability-weighted AI evaluation, and the win condition.
 
-## Позначення маршруту
+## Route notation
 
-Позиція фішки: `0` = старт (поза дошкою), `1..14` = клітини маршруту, `15` = знята.
-Клітини `5..12` — спільний центральний ряд (там можливе збивання), решта — приватні.
-
+Piece position: `0` = start (off the board), `1..14` = route squares, `15` = borne off.
+Squares `5..12` form the shared central row (where capturing happens); the rest are private.
