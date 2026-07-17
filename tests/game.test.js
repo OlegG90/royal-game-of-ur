@@ -155,10 +155,22 @@ test('AI bestReplyPenalty weighs replies by roll probability', () => {
   assert.ok(AI.bestReplyPenalty(likely, 'B') > AI.bestReplyPenalty(unlikely, 'B'));
 });
 
-test('AI pickMove chooses an immediate winning move', () => {
-  const s = stateWith({ turn: 'B', dice: 1, B: [14, 15, 15, 15, 15, 15, 15] });
-  const moves = G.legalMoves(s);
-  const picked = AI.pickMove(s, moves);
+test('AI pickMove chooses an immediate winning move at every level', () => {
+  for (const level of ['easy', 'medium', 'hard', undefined]) {
+    const s = stateWith({ turn: 'B', dice: 1, B: [14, 15, 15, 15, 15, 15, 15] });
+    const moves = G.legalMoves(s);
+    const picked = AI.pickMove(s, moves, level);
 
-  assert.equal(picked.to, G.OFF);
+    assert.equal(picked.to, G.OFF, `level=${level}`);
+  }
+});
+
+test('AI pickMove always returns a legal move at every level', () => {
+  for (const level of ['easy', 'medium', 'hard']) {
+    const s = stateWith({ turn: 'B', dice: 2, A: [8, 0, 0, 0, 0, 0, 0], B: [5, 3, 0, 0, 0, 0, 0] });
+    const moves = G.legalMoves(s);
+    const picked = AI.pickMove(s, moves, level);
+
+    assert.ok(moves.includes(picked), `level=${level}`);
+  }
 });

@@ -248,6 +248,14 @@ dialog h2 { margin: 0 0 10px; color: var(--gold); font-size: 20px; }
   margin: 14px 0 16px;
   flex-wrap: wrap;
 }
+.dlg-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 4px 0 12px;
+}
+.dlg-label { color: var(--ink-dim); font-size: 14px; }
 .rules {
   margin: 0 0 16px;
   padding-left: 18px;

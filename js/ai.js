@@ -80,20 +80,37 @@
     return expected * 0.8;
   }
 
-  function pickMove(state, moves) {
+  /* Рівні сили:
+   *  easy   — випадковий легальний хід;
+   *  medium — евристична оцінка без прорахунку відповіді, з помітним шумом;
+   *  hard   — оцінка + shallow lookahead на найкращу відповідь суперника.
+   * Виграшний хід береться на будь-якому рівні. */
+  function pickMove(state, moves, level) {
+    level = level === 'easy' || level === 'medium' ? level : 'hard';
+
+    for (const mv of moves) {
+      if (G.applyMove(cloneState(state), mv).win) return mv;
+    }
+    if (level === 'easy') {
+      return moves[Math.floor(Math.random() * moves.length)];
+    }
+
     const p = state.turn;
     let best = null;
     let bestScore = -Infinity;
 
     for (const mv of moves) {
-      const probe = cloneState(state);
-      const ev = G.applyMove(probe, mv);
       let s = scoreMove(state, mv);
 
-      if (ev.win) s += 10000;
-      if (ev.rosette) s += 18;                           // зберегти ініціативу
-      s -= bestReplyPenalty(probe, p);                    // shallow lookahead на відповідь
-      s += Math.random() * 2;                             // трохи варіативності
+      if (level === 'hard') {
+        const probe = cloneState(state);
+        const ev = G.applyMove(probe, mv);
+        if (ev.rosette) s += 18;                         // зберегти ініціативу
+        s -= bestReplyPenalty(probe, p);                  // прорахунок відповіді
+        s += Math.random() * 2;                           // трохи варіативності
+      } else {
+        s += Math.random() * 14;                          // medium: більше хаосу, без прорахунку
+      }
 
       if (s > bestScore) { bestScore = s; best = mv; }
     }

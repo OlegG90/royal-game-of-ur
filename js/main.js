@@ -22,6 +22,7 @@
   let pieceEls = {};         // 'A0'.. -> <g>
   let curMoves = [];         // легальні ходи поточної фази
   let timer = null;          // відкладені дії (ШІ, пас)
+  let curLevel = 'medium';   // вибрана сила компʼютера (для нових ігор)
 
   const later = (fn, ms) => { clearTimeout(timer); timer = setTimeout(fn, ms); };
 
@@ -42,6 +43,7 @@
     if (!s.pieces || !isPieceList(s.pieces.A) || !isPieceList(s.pieces.B)) return false;
     if (s.winner !== null && s.winner !== 'A' && s.winner !== 'B') return false;
     if (s.mode === 'ai' && s.aiSide !== undefined && s.aiSide !== 'A' && s.aiSide !== 'B') return false;
+    if (s.mode === 'ai' && s.aiLevel !== undefined && !['easy', 'medium', 'hard'].includes(s.aiLevel)) return false;
     if (s.phase === 'over') return false; // завершені партії не відновлюємо
     if (s.winner) return false;
     if (s.phase === 'roll') return s.dice === null;
@@ -205,7 +207,7 @@
       return;
     }
     if (isAITurn()) {
-      later(() => execMove(window.UrAI.pickMove(S, curMoves)), 850);
+      later(() => execMove(window.UrAI.pickMove(S, curMoves, S.aiLevel)), 850);
     } else {
       renderHighlights();
     }
@@ -277,7 +279,10 @@
     clearTimeout(timer);
     overlay.classList.remove('show');
     S = G.newState(mode);
-    if (mode === 'ai') S.aiSide = side === 'A' ? 'A' : 'B';
+    if (mode === 'ai') {
+      S.aiSide = side === 'A' ? 'A' : 'B';
+      S.aiLevel = curLevel;
+    }
     curMoves = [];
     makePieces();
     save();
@@ -304,6 +309,21 @@
       overlay.classList.remove('show');
       dlgNew.showModal();
     });
+    // Перемикач сили компʼютера (вибір памʼятається між сесіями)
+    try {
+      const l = localStorage.getItem('gameur-level');
+      if (['easy', 'medium', 'hard'].includes(l)) curLevel = l;
+    } catch (e) { /* ignore */ }
+    const levelBtns = dlgNew.querySelectorAll('[data-level]');
+    const markLevel = () => levelBtns.forEach((b) =>
+      b.classList.toggle('active', b.getAttribute('data-level') === curLevel));
+    levelBtns.forEach((b) => b.addEventListener('click', () => {
+      curLevel = b.getAttribute('data-level');
+      try { localStorage.setItem('gameur-level', curLevel); } catch (e) { /* ignore */ }
+      markLevel();
+    }));
+    markLevel();
+
     dlgNew.querySelectorAll('[data-mode]').forEach((b) =>
       b.addEventListener('click', () => {
         dlgNew.close();
