@@ -41,6 +41,7 @@
     if (!['roll', 'move', 'over'].includes(s.phase)) return false;
     if (!s.pieces || !isPieceList(s.pieces.A) || !isPieceList(s.pieces.B)) return false;
     if (s.winner !== null && s.winner !== 'A' && s.winner !== 'B') return false;
+    if (s.mode === 'ai' && s.aiSide !== undefined && s.aiSide !== 'A' && s.aiSide !== 'B') return false;
     if (s.phase === 'over') return false; // завершені партії не відновлюємо
     if (s.winner) return false;
     if (s.phase === 'roll') return s.dice === null;
@@ -62,8 +63,11 @@
   }
 
   // --- Допоміжне ---
-  const isAITurn = () => S.mode === 'ai' && S.turn === 'B';
-  const nameOf = (p) => (p === 'A' ? T('white') : (S.mode === 'ai' ? T('computer') : T('black')));
+  const aiSide = () => (S.aiSide === 'A' ? 'A' : 'B'); // старі збереження без aiSide → B
+  const isAITurn = () => S.mode === 'ai' && S.turn === aiSide();
+  const nameOf = (p) => (S.mode === 'ai' && p === aiSide()
+    ? T('computer')
+    : (p === 'A' ? T('white') : T('black')));
 
   function toast(msg, ms) {
     toastBox.textContent = msg;
@@ -269,15 +273,17 @@
     try { localStorage.removeItem(SAVE_KEY); } catch (e) { }
   }
 
-  function newGame(mode) {
+  function newGame(mode, side) {
     clearTimeout(timer);
     overlay.classList.remove('show');
     S = G.newState(mode);
+    if (mode === 'ai') S.aiSide = side === 'A' ? 'A' : 'B';
     curMoves = [];
     makePieces();
     save();
     render();
     toast(T('newGameStart'));
+    maybeContinue(); // якщо компʼютер грає білими — він ходить першим
   }
 
   // --- Ініціалізація ---
@@ -299,7 +305,10 @@
       dlgNew.showModal();
     });
     dlgNew.querySelectorAll('[data-mode]').forEach((b) =>
-      b.addEventListener('click', () => { dlgNew.close(); newGame(b.getAttribute('data-mode')); }));
+      b.addEventListener('click', () => {
+        dlgNew.close();
+        newGame(b.getAttribute('data-mode'), b.getAttribute('data-ai-side'));
+      }));
     dlgNew.querySelector('.dlg-close').addEventListener('click', () => dlgNew.close());
     dlgRules.querySelector('.dlg-close').addEventListener('click', () => dlgRules.close());
 
