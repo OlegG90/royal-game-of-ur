@@ -7,26 +7,29 @@
   <title>Королівська гра Ур</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=2">
 </head>
 <body>
   <main class="app">
     <header>
-      <h1>Королівська гра Ур</h1>
-      <p class="sub">Шумерська гонка, ~2600 р. до н.е. · реконструкція Ірвінга Фінкеля</p>
+      <h1 data-i18n="title">Королівська гра Ур</h1>
+      <p class="sub" data-i18n="subtitle">Шумерська гонка, ~2600 р. до н.е. · реконструкція Ірвінга Фінкеля</p>
     </header>
 
-    <svg id="board" role="img" aria-label="Дошка гри Ур"></svg>
+    <svg id="board" role="img" data-i18n-aria="boardAria" aria-label="Дошка гри Ур"></svg>
 
     <section class="controls">
       <div id="status"></div>
       <div class="dice-row">
         <div id="dice"></div>
-        <button id="roll-btn" class="btn primary">Кинути кубики</button>
+        <button id="roll-btn" class="btn primary" data-i18n="roll">Кинути кубики</button>
       </div>
       <div class="btn-row">
-        <button id="new-btn" class="btn">Нова гра</button>
-        <button id="rules-btn" class="btn">Правила</button>
+        <button id="new-btn" class="btn" data-i18n="newGame">Нова гра</button>
+        <button id="rules-btn" class="btn" data-i18n="rules">Правила</button>
+        <span class="lang-switch">
+          <button class="btn lang" data-lang="uk">УКР</button><button class="btn lang" data-lang="en">EN</button>
+        </span>
       </div>
     </section>
 
@@ -35,39 +38,40 @@
     <div id="overlay">
       <div class="win-card">
         <div class="win-text"></div>
-        <button id="win-new-btn" class="btn primary">Нова гра</button>
+        <button id="win-new-btn" class="btn primary" data-i18n="newGame">Нова гра</button>
       </div>
     </div>
 
     <dialog id="dlg-new">
-      <h2>Нова гра</h2>
-      <p>Оберіть режим:</p>
+      <h2 data-i18n="newGame">Нова гра</h2>
+      <p data-i18n="chooseMode">Оберіть режим:</p>
       <div class="dlg-btns">
-        <button class="btn primary" data-mode="ai">Проти компʼютера</button>
-        <button class="btn primary" data-mode="pvp">Гра на двох</button>
+        <button class="btn primary" data-mode="ai" data-i18n="vsAI">Проти компʼютера</button>
+        <button class="btn primary" data-mode="pvp" data-i18n="pvp">Гра на двох</button>
       </div>
-      <button class="btn dlg-close">Скасувати</button>
+      <button class="btn dlg-close" data-i18n="cancel">Скасувати</button>
     </dialog>
 
     <dialog id="dlg-rules">
-      <h2>Правила (коротко)</h2>
+      <h2 data-i18n="rulesTitle">Правила (коротко)</h2>
       <ul class="rules">
-        <li>У кожного гравця <b>7 фішок</b>. Мета — першим провести всі маршрутом і зняти з дошки.</li>
-        <li>Кидок 4 тетраедрів дає <b>0–4</b> кроки. 0 — хід переходить.</li>
-        <li>За кидок — <b>один хід</b>: ввести нову фішку або просунути наявну.</li>
-        <li>Маршрут S-подібний: свій ряд (1–4) → спільний центр (5–12) → свій ряд (13–14) → вихід.</li>
-        <li>На спільному ряду фішка суперника <b>збивається</b> на старт.</li>
-        <li>Розетки ✿ (4, 8, 14): <b>додатковий хід</b> і захист. Центральна (8) блокує суперника.</li>
-        <li>Не можна ставати на свою фішку. Зняття — лише <b>точним</b> кидком.</li>
-        <li>Тап по підсвіченій фішці або клітині-цілі виконує хід.</li>
+        <li data-i18n-html="rule1"></li>
+        <li data-i18n-html="rule2"></li>
+        <li data-i18n-html="rule3"></li>
+        <li data-i18n-html="rule4"></li>
+        <li data-i18n-html="rule5"></li>
+        <li data-i18n-html="rule6"></li>
+        <li data-i18n-html="rule7"></li>
+        <li data-i18n-html="rule8"></li>
       </ul>
-      <button class="btn dlg-close">Зрозуміло</button>
+      <button class="btn dlg-close" data-i18n="gotIt">Зрозуміло</button>
     </dialog>
   </main>
 
-  <script src="js/game.js"></script>
-  <script src="js/board.js"></script>
-  <script src="js/ai.js"></script>
-  <script src="js/main.js"></script>
+  <script src="js/i18n.js?v=2"></script>
+  <script src="js/game.js?v=2"></script>
+  <script src="js/board.js?v=2"></script>
+  <script src="js/ai.js?v=2"></script>
+  <script src="js/main.js?v=2"></script>
 </body>
 </html>

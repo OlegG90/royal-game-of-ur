@@ -4,6 +4,7 @@
 
   const G = window.UrGame;
   const B = window.UrBoard;
+  const T = window.UrI18n.t;
   const SAVE_KEY = 'gameur-save-v1';
 
   // --- DOM ---
@@ -62,7 +63,7 @@
 
   // --- Допоміжне ---
   const isAITurn = () => S.mode === 'ai' && S.turn === 'B';
-  const nameOf = (p) => (p === 'A' ? 'Білі' : (S.mode === 'ai' ? 'Компʼютер' : 'Чорні'));
+  const nameOf = (p) => (p === 'A' ? T('white') : (S.mode === 'ai' ? T('computer') : T('black')));
 
   function toast(msg, ms) {
     toastBox.textContent = msg;
@@ -145,7 +146,7 @@
   function renderDice() {
     if (!S.dice) {
       diceBox.innerHTML = '<span class="dice-hint">' +
-        (S.phase === 'roll' && !S.winner ? 'кидайте кубики' : '') + '</span>';
+        (S.phase === 'roll' && !S.winner ? T('diceHint') : '') + '</span>';
       return;
     }
     let html = '<span class="tetra-row">';
@@ -190,12 +191,12 @@
   function afterRoll() {
     curMoves = G.legalMoves(S);
     if (S.dice.total === 0) {
-      toast(`${nameOf(S.turn)}: випало 0 — хід переходить`);
+      toast(T('toastZero', { name: nameOf(S.turn) }));
       later(passTurn, 1300);
       return;
     }
     if (!curMoves.length) {
-      toast(`${nameOf(S.turn)}: немає можливих ходів`);
+      toast(T('toastNoMoves', { name: nameOf(S.turn) }));
       later(passTurn, 1300);
       return;
     }
@@ -222,9 +223,9 @@
     save();
     render();
     if (ev.win) { showWinner(mover); return; }
-    if (ev.capture) toast(`${nameOf(mover)}: фішку суперника збито!`);
-    else if (ev.bearOff) toast(`${nameOf(mover)}: фішка вийшла (${S.pieces[mover].filter((v) => v === G.OFF).length}/7)`);
-    if (ev.rosette) toast(`${nameOf(mover)}: розетка ✿ — додатковий хід`);
+    if (ev.capture) toast(T('toastCapture', { name: nameOf(mover) }));
+    else if (ev.bearOff) toast(T('toastBearOff', { name: nameOf(mover), n: S.pieces[mover].filter((v) => v === G.OFF).length }));
+    if (ev.rosette) toast(T('toastRosette', { name: nameOf(mover) }));
     maybeContinue();
   }
 
@@ -263,7 +264,7 @@
 
   // --- Перемога / нова гра ---
   function showWinner(p) {
-    overlay.querySelector('.win-text').textContent = `${nameOf(p)} — перемога!`;
+    overlay.querySelector('.win-text').textContent = T('win', { name: nameOf(p) });
     overlay.classList.add('show');
     try { localStorage.removeItem(SAVE_KEY); } catch (e) { }
   }
@@ -276,7 +277,7 @@
     makePieces();
     save();
     render();
-    toast('Нова гра. Починають білі.');
+    toast(T('newGameStart'));
   }
 
   // --- Ініціалізація ---
@@ -285,6 +286,12 @@
     layers.hitLayer.addEventListener('click', onCellClick);
 
     rollBtn.addEventListener('click', doRoll);
+    window.addEventListener('gameur:lang', () => {
+      render();
+      if (S.winner && overlay.classList.contains('show')) {
+        overlay.querySelector('.win-text').textContent = T('win', { name: nameOf(S.winner) });
+      }
+    });
     document.getElementById('new-btn').addEventListener('click', () => dlgNew.showModal());
     document.getElementById('rules-btn').addEventListener('click', () => dlgRules.showModal());
     document.getElementById('win-new-btn').addEventListener('click', () => {
@@ -301,7 +308,7 @@
       S = saved;
       makePieces();
       render();
-      toast('Гру відновлено');
+      toast(T('restored'));
       if (S.phase === 'move') { curMoves = G.legalMoves(S); afterRoll(); }
       else maybeContinue();
     } else {

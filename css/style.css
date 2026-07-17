@@ -160,7 +160,30 @@ h1 {
   cursor: default;
   filter: none;
 }
-.btn-row { display: flex; gap: 10px; }
+.btn-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
+
+/* --- Перемикач мови --- */
+.lang-switch {
+  display: inline-flex;
+  border: 1px solid rgba(232, 181, 61, 0.4);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.lang-switch .btn.lang {
+  border: none;
+  border-radius: 0;
+  padding: 9px 10px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+  background: transparent;
+}
+.lang-switch .btn.lang + .btn.lang { border-left: 1px solid rgba(232, 181, 61, 0.25); }
+.lang-switch .btn.lang.active {
+  background: rgba(232, 181, 61, 0.18);
+  color: var(--gold);
+  font-weight: 600;
+}
 
 /* --- Тост --- */
 #toast {

@@ -192,12 +192,12 @@
       const y = rowY(row) + (player === 'A' ? 12 : CELL - 5);
       el('text', {
         x: colX(4) + 6, y, fill: '#c9b389', 'font-size': 11, opacity: 0.85,
-        'font-family': 'inherit',
-      }, capLayer).textContent = 'старт';
+        'font-family': 'inherit', 'data-i18n': 'capStart',
+      }, capLayer).textContent = window.UrI18n.t('capStart');
       el('text', {
         x: colX(6) - 16, y, fill: '#c9b389', 'font-size': 11, opacity: 0.85,
-        'text-anchor': 'end', 'font-family': 'inherit',
-      }, capLayer).textContent = 'вихід';
+        'text-anchor': 'end', 'font-family': 'inherit', 'data-i18n': 'capExit',
+      }, capLayer).textContent = window.UrI18n.t('capExit');
     }
 
     // Прозорі клік-зони клітин (для ходу тапом по цілі)
