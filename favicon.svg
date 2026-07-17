@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#efe4c9"/>
+  <g transform="translate(32 32)">
+    <g fill="#274a8f">
+      <path d="M0 -8 C 5 -14, 5 -26, 0 -29 C -5 -26, -5 -14, 0 -8 Z"/>
+      <path d="M0 -8 C 5 -14, 5 -26, 0 -29 C -5 -26, -5 -14, 0 -8 Z" transform="rotate(90)"/>
+      <path d="M0 -8 C 5 -14, 5 -26, 0 -29 C -5 -26, -5 -14, 0 -8 Z" transform="rotate(180)"/>
+      <path d="M0 -8 C 5 -14, 5 -26, 0 -29 C -5 -26, -5 -14, 0 -8 Z" transform="rotate(270)"/>
+    </g>
+    <g fill="#a63b2a">
+      <path d="M0 -8 C 5 -14, 5 -26, 0 -29 C -5 -26, -5 -14, 0 -8 Z" transform="rotate(45)"/>
+      <path d="M0 -8 C 5 -14, 5 -26, 0 -29 C -5 -26, -5 -14, 0 -8 Z" transform="rotate(135)"/>
+      <path d="M0 -8 C 5 -14, 5 -26, 0 -29 C -5 -26, -5 -14, 0 -8 Z" transform="rotate(225)"/>
+      <path d="M0 -8 C 5 -14, 5 -26, 0 -29 C -5 -26, -5 -14, 0 -8 Z" transform="rotate(315)"/>
+    </g>
+    <circle r="9" fill="#274a8f"/>
+    <circle r="5.5" fill="#efe4c9"/>
+    <circle r="2.5" fill="#a63b2a"/>
+  </g>
+</svg>

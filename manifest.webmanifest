@@ -1,0 +1,13 @@
+{
+  "name": "Королівська гра Ур",
+  "short_name": "Гра Ур",
+  "description": "Шумерська настільна гонка (~2600 р. до н.е.), реконструкція Ірвінга Фінкеля",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1c130b",
+  "theme_color": "#1c130b",
+  "lang": "uk",
+  "icons": [
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
