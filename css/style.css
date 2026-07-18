@@ -1,12 +1,22 @@
-/* Королівська гра Ур — стилі */
+/* Королівська гра Ур — стилі (дизайн: claude.ai/design «Royal Game of Ur UI») */
 :root {
-  --bg: #1c130b;
+  --bg: #12100a;
   --bg2: #2a1d10;
+  --panel: #211609;
+  --panel2: #241812;
+  --board-bg: #160f07;
+  --line: #34261a;
+  --line2: #4a381f;
   --ink: #efe4c9;
   --ink-dim: #c9b389;
-  --lapis: #274a8f;
-  --red: #a63b2a;
+  --muted: #8a6f4a;
+  --muted2: #6a563a;
+  --faint: #5c4a32;
   --gold: #e8b53d;
+  --gold2: #f0c85a;
+  --red: #a63b2a;
+  --font-head: 'Cinzel', Georgia, serif;
+  --font-body: 'Spectral', Georgia, serif;
 }
 
 * { box-sizing: border-box; }
@@ -14,62 +24,303 @@
 html, body {
   margin: 0;
   padding: 0;
+  min-height: 100%;
   background: radial-gradient(ellipse at 50% 0%, var(--bg2), var(--bg) 70%);
   color: var(--ink);
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-  min-height: 100%;
+  font-family: var(--font-body);
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 
-.app {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 10px 12px calc(24px + env(safe-area-inset-bottom));
+#screen-menu[hidden], #screen-game[hidden] { display: none; }
+
+button { font-family: inherit; }
+
+/* --- Перемикач мови (глобальний, правий верхній кут) --- */
+.lang-switch {
+  position: fixed;
+  top: calc(10px + env(safe-area-inset-top));
+  right: 12px;
+  z-index: 50;
+  display: inline-flex;
+  border: 1px solid var(--line2);
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(18, 16, 10, 0.7);
+  backdrop-filter: blur(4px);
+}
+.lang-switch .lang {
+  border: none;
+  padding: 7px 10px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+  background: transparent;
+  cursor: pointer;
+}
+.lang-switch .lang + .lang { border-left: 1px solid var(--line); }
+.lang-switch .lang.active { background: rgba(232, 181, 61, 0.18); color: var(--gold); font-weight: 600; }
+
+/* ============ МЕНЮ ============ */
+#screen-menu {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px calc(40px + env(safe-area-inset-bottom));
+}
+.menu-wrap { width: 100%; max-width: 460px; text-align: center; }
+
+.menu-logo {
+  width: 96px; height: 96px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, var(--gold2), var(--gold));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 46px; color: #1c130b;
+  box-shadow: 0 0 50px rgba(232, 181, 61, 0.35);
+}
+.menu-wrap h1 {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: clamp(24px, 6vw, 30px);
+  color: var(--gold);
+  margin: 0 0 4px;
+  letter-spacing: 0.03em;
+}
+.menu-wrap .sub { font-size: 13px; color: var(--muted); margin: 0 0 26px; font-weight: 300; }
+
+.menu-card {
+  background: var(--panel);
+  border: 1px solid var(--line2);
+  border-radius: 20px;
+  padding: 22px;
+  text-align: left;
+}
+.menu-label {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 9px;
+}
+.menu-label.center { text-align: center; }
+
+.opt-row { display: flex; gap: 10px; margin-bottom: 20px; }
+.opt-card {
+  flex: 1;
+  padding: 14px 8px;
+  border-radius: 14px;
+  background: var(--bg2);
+  border: 2px solid transparent;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.opt-card.sel { border-color: var(--gold); }
+.opt-emoji { font-size: 22px; margin-bottom: 3px; }
+.opt-text { font-size: 13px; color: var(--ink); }
+.opt-card.side {
+  display: flex; align-items: center; justify-content: center; gap: 9px;
+  padding: 12px;
+}
+.opt-card.side .opt-text { font-size: 14px; }
+
+.swatch {
+  width: 22px; height: 22px; border-radius: 50%; flex: none;
+}
+.swA { background: radial-gradient(circle at 35% 30%, #f6eeda, #ddceac); box-shadow: inset 0 0 0 1.5px #8a7a55; }
+.swB { background: radial-gradient(circle at 35% 30%, #4a4038, #16130f); box-shadow: inset 0 0 0 1.5px #0d0a08; }
+
+.seg {
+  display: flex; gap: 6px;
+  margin-bottom: 20px;
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 5px;
+}
+.seg button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink-dim);
+  text-align: center;
+  font-size: 13px;
+  cursor: pointer;
+}
+.seg button.active { background: var(--gold); color: #1c130b; font-weight: 600; }
+
+.btn-gold {
+  width: 100%;
+  height: 54px;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(180deg, var(--gold2), var(--gold));
+  color: #1c130b;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.05em;
+  box-shadow: 0 8px 20px rgba(232, 181, 61, 0.3);
+  cursor: pointer;
+}
+.btn-gold:disabled { opacity: 0.35; cursor: default; animation: none; box-shadow: none; }
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--line2);
+  color: var(--ink-dim);
+  border-radius: 12px;
+  padding: 9px 16px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.btn-outline.wide { width: 100%; height: 44px; border-radius: 16px; }
+#continue-btn { margin-bottom: 10px; }
+
+.menu-links { margin-top: 20px; text-align: center; }
+.menu-links .menu-label { margin-bottom: 8px; color: var(--muted2); }
+.link-item {
+  display: block;
+  width: 100%;
+  margin: 0 0 6px;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--gold);
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* ============ ГРА ============ */
+#screen-game {
+  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  padding: 18px 16px calc(32px + env(safe-area-inset-bottom));
 }
+.game-wrap { width: 100%; max-width: 1100px; margin: auto; position: relative; }
 
-header { text-align: center; }
-h1 {
-  margin: 6px 0 0;
-  font-size: clamp(20px, 4.5vw, 30px);
-  letter-spacing: 0.06em;
-  color: var(--gold);
-  font-weight: 600;
+.game-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px;
+  padding-right: 84px; /* місце під перемикач мови */
 }
-.sub {
-  margin: 2px 0 0;
-  font-size: clamp(11px, 2.6vw, 13px);
-  color: var(--ink-dim);
-}
+.game-title { font-family: var(--font-head); font-size: 20px; color: var(--gold); letter-spacing: 0.03em; }
+.game-sub { font-size: 12px; color: var(--muted); font-weight: 300; }
 
-/* --- Дошка --- */
+.game-grid { display: flex; flex-wrap: wrap; gap: 18px; align-items: stretch; }
+
+.board-panel {
+  flex: 1 1 360px;
+  min-width: 300px;
+  background: var(--board-bg);
+  border: 1px solid var(--bg2);
+  border-radius: 16px;
+  padding: 18px;
+  display: flex; align-items: center; justify-content: center;
+}
 #board {
   width: 100%;
-  height: auto;
   display: block;
   filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.55));
   user-select: none;
 }
-
 #board .hit { cursor: pointer; }
 
+.side-col {
+  flex: 0 1 300px;
+  min-width: 260px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+
+.player-card {
+  position: relative;
+  border-radius: 16px;
+  padding: 13px 15px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.pc-black { background: var(--panel2); border: 1px solid var(--line); }
+.pc-white { background: var(--bg2); border: 1px solid var(--line2); }
+.pc-left { display: flex; align-items: center; gap: 11px; }
+.player-card .swatch { width: 30px; height: 30px; }
+.pc-name { font-size: 14px; color: var(--ink-dim); }
+.pc-white .pc-name { color: var(--gold); }
+.pc-sub { font-size: 11px; color: #7a6244; min-height: 13px; }
+.pc-count span:first-child { font-family: var(--font-head); font-size: 17px; color: var(--ink-dim); }
+.pc-white .pc-count span:first-child { color: var(--gold); }
+.pc-total { font-size: 12px; color: var(--faint); }
+.player-card.active::after {
+  content: '';
+  position: absolute; inset: 0;
+  border: 1.5px solid var(--gold);
+  border-radius: 16px;
+  pointer-events: none;
+}
+
+#status {
+  text-align: center;
+  font-size: 14px;
+  color: var(--ink-dim);
+  min-height: 20px;
+  font-weight: 300;
+}
+
+.dice-card {
+  border-radius: 16px;
+  background: var(--panel2);
+  border: 1px solid var(--line);
+  padding: 18px;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.dice-label {
+  font-family: var(--font-head);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.dice-tris { display: flex; gap: 8px; height: 24px; }
+.ur-tri {
+  width: 0; height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-bottom: 24px solid #6a533a;
+  position: relative;
+}
+.ur-tri.mark { border-bottom-color: var(--gold); }
+.ur-tri.mark::after {
+  content: '';
+  position: absolute; top: 9px; left: -5px;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: #1c130b;
+}
+.ur-rolling .ur-tri { animation: urshake 0.3s ease-in-out infinite; }
+.dice-result { font-family: var(--font-head); font-size: 14px; color: var(--ink-dim); }
+.dice-result .num { color: var(--gold); font-size: 20px; }
+.dice-result[hidden] { display: none; }
+
+#roll-btn { height: 56px; }
+#roll-btn.ur-roll { animation: urglow 1.4s ease-in-out infinite; }
+
+/* --- SVG-фішки --- */
 .piece {
   transition: transform 0.4s cubic-bezier(0.3, 0.9, 0.4, 1);
-  cursor: pointer;
+  cursor: default;
 }
+.piece.movable { cursor: pointer; }
 .piece .ring { fill: none; stroke: transparent; stroke-width: 3; }
-.piece.movable .ring {
-  stroke: var(--gold);
-  animation: pulse 1.1s ease-in-out infinite;
-}
-@keyframes pulse {
-  0%, 100% { stroke-opacity: 1; stroke-width: 3; }
-  50% { stroke-opacity: 0.45; stroke-width: 5; }
-}
+.piece.movable .ring { stroke: var(--gold); animation: urpulse 1.1s ease-in-out infinite; }
 .piece.pA .disc { fill: #ede1c2; stroke: #8a7a55; stroke-width: 2; }
 .piece.pB .disc { fill: #2a2320; stroke: #0d0a08; stroke-width: 2; }
 
@@ -82,121 +333,24 @@ h1 {
 }
 .dest.cap { stroke: #e06a4f; fill: rgba(224, 106, 79, 0.18); }
 
-/* --- Керування --- */
-.controls {
-  width: 100%;
-  max-width: 560px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-#status { display: flex; align-items: center; gap: 10px; font-size: 15px; }
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 5px 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid transparent;
-  color: var(--ink-dim);
-}
-.chip.active {
-  border-color: var(--gold);
-  color: var(--ink);
-  background: rgba(232, 181, 61, 0.12);
-}
-.chip b { color: var(--gold); }
-.vs { color: var(--ink-dim); }
-.mini {
-  width: 14px; height: 14px; border-radius: 50%; display: inline-block;
-}
-.mini.mA { background: #ede1c2; border: 1.5px solid #8a7a55; }
-.mini.mB { background: #2a2320; border: 1.5px solid #666; }
-
-.dice-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  min-height: 46px;
-}
-#dice { display: flex; align-items: center; gap: 8px; min-width: 150px; justify-content: flex-end; }
-.tetra-row { display: inline-flex; gap: 4px; }
-.tetra { width: 26px; height: 24px; }
-.tetra path { fill: #d8c290; stroke: #6b5a35; stroke-width: 1.5; }
-.tetra .mark { fill: var(--lapis); }
-.dice-total {
-  font-size: 26px;
-  font-weight: 700;
-  color: var(--gold);
-  min-width: 22px;
-  text-align: center;
-}
-.dice-hint { color: var(--ink-dim); font-size: 13px; font-style: italic; }
-
-.btn {
-  font: inherit;
-  font-size: 15px;
-  padding: 9px 18px;
-  border-radius: 10px;
-  border: 1px solid rgba(232, 181, 61, 0.4);
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--ink);
-  cursor: pointer;
-  transition: background 0.15s;
-}
-.btn:hover { background: rgba(232, 181, 61, 0.15); }
-.btn.primary {
-  background: linear-gradient(180deg, #e8b53d, #c8922a);
-  color: #241407;
-  font-weight: 600;
-  border: none;
-}
-.btn.primary:hover { filter: brightness(1.07); }
-.btn:disabled {
-  opacity: 0.35;
-  cursor: default;
-  filter: none;
-}
-.btn-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
-
-/* --- Перемикач мови --- */
-.lang-switch {
-  display: inline-flex;
-  border: 1px solid rgba(232, 181, 61, 0.4);
-  border-radius: 10px;
-  overflow: hidden;
-}
-.lang-switch .btn.lang {
-  border: none;
-  border-radius: 0;
-  padding: 9px 10px;
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  color: var(--ink-dim);
-  background: transparent;
-}
-.lang-switch .btn.lang + .btn.lang { border-left: 1px solid rgba(232, 181, 61, 0.25); }
-.lang-switch .btn.lang.active {
-  background: rgba(232, 181, 61, 0.18);
-  color: var(--gold);
-  font-weight: 600;
-}
+/* --- Анімації --- */
+@keyframes urpulse { 0%, 100% { stroke-opacity: 1; stroke-width: 3; } 50% { stroke-opacity: 0.4; stroke-width: 5; } }
+@keyframes urglow { 0%, 100% { box-shadow: 0 8px 20px rgba(232, 181, 61, 0.28); } 50% { box-shadow: 0 8px 30px rgba(232, 181, 61, 0.6); } }
+@keyframes urshake { 0%, 100% { transform: translateY(0) rotate(0); } 25% { transform: translateY(-2px) rotate(-4deg); } 75% { transform: translateY(1px) rotate(4deg); } }
 
 /* --- Тост --- */
 #toast {
   position: fixed;
   left: 50%;
-  bottom: calc(18px + env(safe-area-inset-bottom));
-  transform: translateX(-50%) translateY(20px);
-  background: rgba(20, 12, 5, 0.92);
-  border: 1px solid rgba(232, 181, 61, 0.5);
+  bottom: calc(28px + env(safe-area-inset-bottom));
+  transform: translateX(-50%) translateY(16px);
+  background: #1c130b;
+  border: 1px solid var(--line2);
   color: var(--ink);
-  padding: 9px 18px;
-  border-radius: 12px;
+  padding: 12px 22px;
+  border-radius: 999px;
   font-size: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s, transform 0.25s;
@@ -208,107 +362,75 @@ h1 {
 
 /* --- Оверлей перемоги --- */
 #overlay {
-  position: fixed;
+  position: absolute;
   inset: 0;
-  background: rgba(10, 6, 2, 0.75);
+  background: rgba(12, 8, 5, 0.86);
+  border-radius: 16px;
   display: none;
   align-items: center;
   justify-content: center;
   z-index: 30;
 }
 #overlay.show { display: flex; }
-.win-card {
-  background: var(--bg2);
-  border: 1px solid var(--gold);
-  border-radius: 16px;
-  padding: 28px 36px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+.win-card { text-align: center; padding: 36px; max-width: 360px; }
+.win-logo {
+  width: 104px; height: 104px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, var(--gold2), var(--gold));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px; color: #1c130b;
+  box-shadow: 0 0 60px rgba(232, 181, 61, 0.45);
 }
-.win-text { font-size: 22px; font-weight: 600; color: var(--gold); }
+.win-kicker {
+  font-family: var(--font-head);
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.win-text {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 32px;
+  color: var(--gold);
+  margin: 6px 0;
+}
+.win-sub { font-size: 14px; color: var(--ink-dim); font-weight: 300; margin: 0 0 26px; }
+.win-card .btn-gold { height: 52px; margin-bottom: 10px; }
 
-/* --- Діалоги --- */
+/* --- Діалог правил --- */
 dialog {
-  background: var(--bg2);
+  background: var(--panel);
   color: var(--ink);
-  border: 1px solid rgba(232, 181, 61, 0.5);
+  border: 1px solid var(--line2);
   border-radius: 16px;
   padding: 22px 26px;
   max-width: min(92vw, 460px);
+  max-height: 88dvh;
+  overflow: auto;
+  font-family: var(--font-body);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
 }
 dialog::backdrop { background: rgba(10, 6, 2, 0.7); }
-dialog h2 { margin: 0 0 10px; color: var(--gold); font-size: 20px; }
-.dlg-btns {
-  display: flex;
-  gap: 10px;
-  margin: 14px 0 16px;
-  flex-wrap: wrap;
-}
-.dlg-section {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin: 4px 0 12px;
-}
-.dlg-label { color: var(--ink-dim); font-size: 14px; }
-.rules {
-  margin: 0 0 16px;
-  padding-left: 18px;
-  font-size: 14px;
-  line-height: 1.55;
-}
+dialog h2 { margin: 0 0 10px; color: var(--gold); font-family: var(--font-head); font-size: 19px; }
+.rules { margin: 0 0 16px; padding-left: 18px; font-size: 14px; line-height: 1.55; }
 .rules li { margin-bottom: 5px; }
 .rules b { color: var(--gold); }
 
-@media (max-width: 480px) {
-  .dice-row { flex-direction: column; gap: 6px; }
-  #dice { justify-content: center; }
-}
-
-/* --- Мобільний landscape: дошка ліворуч, керування праворуч --- */
+/* --- Компакт для низьких екранів (мобільний landscape) --- */
 @media (orientation: landscape) and (max-height: 540px) {
-  html, body { height: 100%; overflow: hidden; }
-  .app {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) clamp(190px, 30vw, 300px);
-    grid-template-rows: auto minmax(0, 1fr);
-    grid-template-areas:
-      "board header"
-      "board controls";
-    align-items: center;
-    column-gap: 12px;
-    row-gap: 4px;
-    max-width: none;
-    height: 100dvh;
-    padding: 6px 10px calc(6px + env(safe-area-inset-bottom));
-  }
-  header { grid-area: header; align-self: end; }
-  h1 { font-size: 17px; margin: 0; }
-  .sub { font-size: 10px; }
-  #board {
-    grid-area: board;
-    width: min(100%, calc((100dvh - 16px) * 2.4));
-    justify-self: center;
-  }
-  .controls {
-    grid-area: controls;
-    align-self: start;
-    gap: 6px;
-    max-width: none;
-  }
-  #status { font-size: 13px; flex-wrap: wrap; justify-content: center; gap: 4px; }
-  .chip { padding: 3px 9px; }
-  .dice-row { flex-direction: column; gap: 4px; min-height: 0; }
-  #dice { justify-content: center; min-width: 0; min-height: 26px; }
-  .dice-total { font-size: 20px; }
-  .tetra { width: 20px; height: 19px; }
-  .btn { font-size: 13px; padding: 7px 12px; }
-  #toast { bottom: 8px; }
+  #screen-game { padding: 10px 12px calc(12px + env(safe-area-inset-bottom)); }
+  .game-head { margin-bottom: 10px; }
+  .game-sub { display: none; }
+  .board-panel { padding: 10px; }
+  .side-col { gap: 8px; }
+  .player-card { padding: 8px 12px; }
+  .dice-card { padding: 10px; gap: 7px; }
+  #roll-btn, .btn-gold { height: 46px; }
+  #screen-menu { padding: 14px 12px; align-items: flex-start; }
+  .menu-logo { width: 60px; height: 60px; font-size: 30px; margin-bottom: 8px; }
+  .menu-wrap .sub { margin-bottom: 12px; }
+  .menu-card { padding: 14px; }
+  .opt-row, .seg { margin-bottom: 12px; }
 }
-
-dialog { max-height: 88dvh; overflow: auto; }

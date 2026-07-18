@@ -3,82 +3,148 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#1c130b">
+  <meta name="theme-color" content="#12100a">
   <title>Королівська гра Ур</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="css/style.css?v=4">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Spectral:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=5">
 </head>
 <body>
-  <main class="app">
-    <header>
+  <span class="lang-switch">
+    <button class="lang" data-lang="uk">УКР</button><button class="lang" data-lang="en">EN</button>
+  </span>
+
+  <!-- ============ МЕНЮ ============ -->
+  <section id="screen-menu" class="screen">
+    <div class="menu-wrap">
+      <div class="menu-logo">✿</div>
       <h1 data-i18n="title">Королівська гра Ур</h1>
-      <p class="sub" data-i18n="subtitle">Шумерська гонка, ~2600 р. до н.е. · реконструкція Ірвінга Фінкеля</p>
-    </header>
+      <p class="sub" data-i18n="subtitle">Шумерська гонка · ~2600 р. до н.е. · реконструкція Фінкеля</p>
 
-    <svg id="board" role="img" data-i18n-aria="boardAria" aria-label="Дошка гри Ур"></svg>
+      <div class="menu-card">
+        <div class="menu-label" data-i18n="modeLabel">Режим</div>
+        <div class="opt-row">
+          <div class="opt-card" data-mode="ai">
+            <div class="opt-emoji">🤖</div><div class="opt-text" data-i18n="vsAIShort">Проти ПК</div>
+          </div>
+          <div class="opt-card" data-mode="pvp">
+            <div class="opt-emoji">👥</div><div class="opt-text" data-i18n="pvpShort">На двох</div>
+          </div>
+        </div>
 
-    <section class="controls">
-      <div id="status"></div>
-      <div class="dice-row">
-        <div id="dice"></div>
-        <button id="roll-btn" class="btn primary" data-i18n="roll">Кинути кубики</button>
+        <div id="ai-opts">
+          <div class="menu-label" data-i18n="difficulty">Сила компʼютера</div>
+          <div class="seg" id="level-seg">
+            <button data-level="easy" data-i18n="levelEasy">Легкий</button><button data-level="medium" data-i18n="levelMedium">Середній</button><button data-level="hard" data-i18n="levelHard">Складний</button>
+          </div>
+          <div class="menu-label" data-i18n="sideLabel">Ваша сторона</div>
+          <div class="opt-row side-row">
+            <div class="opt-card side" data-side="A">
+              <span class="swatch swA"></span><span class="opt-text" data-i18n="white">Білі</span>
+            </div>
+            <div class="opt-card side" data-side="B">
+              <span class="swatch swB"></span><span class="opt-text" data-i18n="black">Чорні</span>
+            </div>
+          </div>
+        </div>
+
+        <button id="continue-btn" class="btn-outline wide" data-i18n="continueGame" hidden>Продовжити партію</button>
+        <button id="start-btn" class="btn-gold" data-i18n="startGame">Почати гру</button>
       </div>
-      <div class="btn-row">
-        <button id="new-btn" class="btn" data-i18n="newGame">Нова гра</button>
-        <button id="rules-btn" class="btn" data-i18n="rules">Правила</button>
-        <span class="lang-switch">
-          <button class="btn lang" data-lang="uk">УКР</button><button class="btn lang" data-lang="en">EN</button>
-        </span>
-      </div>
-    </section>
 
-    <div id="toast"></div>
-
-    <div id="overlay">
-      <div class="win-card">
-        <div class="win-text"></div>
-        <button id="win-new-btn" class="btn primary" data-i18n="newGame">Нова гра</button>
+      <div class="menu-links">
+        <div class="menu-label center" data-i18n="linksLabel">Правила та джерела</div>
+        <button id="rules-btn" class="link-item" data-i18n="rules">Правила (коротко)</button>
+        <a class="link-item" href="https://en.wikipedia.org/wiki/Royal_Game_of_Ur" target="_blank" rel="noopener" data-i18n="wikiGame">Королівська гра Ур — Wikipedia ↗</a>
+        <a class="link-item" href="https://en.wikipedia.org/wiki/Irving_Finkel" target="_blank" rel="noopener" data-i18n="wikiFinkel">Ірвінг Фінкель — Wikipedia ↗</a>
       </div>
     </div>
+  </section>
 
-    <dialog id="dlg-new">
-      <h2 data-i18n="newGame">Нова гра</h2>
-      <p data-i18n="chooseMode">Оберіть режим:</p>
-      <div class="dlg-section">
-        <span class="dlg-label" data-i18n="difficulty">Сила компʼютера:</span>
-        <span class="lang-switch level-switch">
-          <button class="btn lang" data-level="easy" data-i18n="levelEasy">Легкий</button><button class="btn lang" data-level="medium" data-i18n="levelMedium">Середній</button><button class="btn lang" data-level="hard" data-i18n="levelHard">Складний</button>
-        </span>
+  <!-- ============ ГРА ============ -->
+  <section id="screen-game" class="screen" hidden>
+    <div class="game-wrap">
+      <header class="game-head">
+        <div>
+          <div class="game-title" data-i18n="title">Королівська гра Ур</div>
+          <div class="game-sub" data-i18n="subtitleShort">реконструкція Фінкеля</div>
+        </div>
+        <button id="menu-btn" class="btn-outline" data-i18n="newGame">Нова гра</button>
+      </header>
+
+      <div class="game-grid">
+        <div class="board-panel">
+          <svg id="board" role="img" data-i18n-aria="boardAria" aria-label="Дошка гри Ур"></svg>
+        </div>
+
+        <div class="side-col">
+          <div class="player-card pc-black" id="card-B">
+            <div class="pc-left">
+              <span class="swatch swB"></span>
+              <div><div class="pc-name" id="name-B"></div><div class="pc-sub" id="sub-B"></div></div>
+            </div>
+            <div class="pc-count"><span id="off-B">0</span><span class="pc-total">/7</span></div>
+          </div>
+
+          <div id="status"></div>
+
+          <div class="dice-card" id="dice-card">
+            <div class="dice-label" data-i18n="diceLabel">Кубики</div>
+            <div class="dice-tris" id="dice-tris">
+              <div class="ur-tri"></div><div class="ur-tri"></div><div class="ur-tri"></div><div class="ur-tri"></div>
+            </div>
+            <div class="dice-result" id="dice-result" hidden><span id="dice-verb" data-i18n="moveOn">хід на</span> <span class="num" id="dice-total">0</span></div>
+          </div>
+
+          <button id="roll-btn" class="btn-gold" data-i18n="roll">Кинути кубики</button>
+
+          <div class="player-card pc-white" id="card-A">
+            <div class="pc-left">
+              <span class="swatch swA"></span>
+              <div><div class="pc-name" id="name-A"></div><div class="pc-sub" id="sub-A"></div></div>
+            </div>
+            <div class="pc-count"><span id="off-A">0</span><span class="pc-total">/7</span></div>
+          </div>
+        </div>
       </div>
-      <div class="dlg-btns">
-        <button class="btn primary" data-mode="ai" data-ai-side="B" data-i18n="vsAIWhite">Проти компʼютера — білими</button>
-        <button class="btn primary" data-mode="ai" data-ai-side="A" data-i18n="vsAIBlack">Проти компʼютера — чорними</button>
-        <button class="btn primary" data-mode="pvp" data-i18n="pvp">Гра на двох</button>
+
+      <div id="overlay">
+        <div class="win-card">
+          <div class="win-logo">✿</div>
+          <div class="win-kicker" data-i18n="gameOver">Гру завершено</div>
+          <h2 class="win-text"></h2>
+          <p class="win-sub"></p>
+          <button id="rematch-btn" class="btn-gold" data-i18n="rematch">Реванш</button>
+          <button id="overlay-menu-btn" class="btn-outline wide" data-i18n="toMenu">У меню</button>
+        </div>
       </div>
-      <button class="btn dlg-close" data-i18n="cancel">Скасувати</button>
-    </dialog>
+    </div>
+  </section>
 
-    <dialog id="dlg-rules">
-      <h2 data-i18n="rulesTitle">Правила (коротко)</h2>
-      <ul class="rules">
-        <li data-i18n-html="rule1"></li>
-        <li data-i18n-html="rule2"></li>
-        <li data-i18n-html="rule3"></li>
-        <li data-i18n-html="rule4"></li>
-        <li data-i18n-html="rule5"></li>
-        <li data-i18n-html="rule6"></li>
-        <li data-i18n-html="rule7"></li>
-        <li data-i18n-html="rule8"></li>
-      </ul>
-      <button class="btn dlg-close" data-i18n="gotIt">Зрозуміло</button>
-    </dialog>
-  </main>
+  <div id="toast"></div>
 
-  <script src="js/i18n.js?v=4"></script>
-  <script src="js/game.js?v=4"></script>
-  <script src="js/board.js?v=4"></script>
-  <script src="js/ai.js?v=4"></script>
-  <script src="js/main.js?v=4"></script>
+  <dialog id="dlg-rules">
+    <h2 data-i18n="rules">Правила (коротко)</h2>
+    <ul class="rules">
+      <li data-i18n-html="rule1"></li>
+      <li data-i18n-html="rule2"></li>
+      <li data-i18n-html="rule3"></li>
+      <li data-i18n-html="rule4"></li>
+      <li data-i18n-html="rule5"></li>
+      <li data-i18n-html="rule6"></li>
+      <li data-i18n-html="rule7"></li>
+      <li data-i18n-html="rule8"></li>
+    </ul>
+    <button class="btn-outline dlg-close" data-i18n="gotIt">Зрозуміло</button>
+  </dialog>
+
+  <script src="js/i18n.js?v=5"></script>
+  <script src="js/game.js?v=5"></script>
+  <script src="js/board.js?v=5"></script>
+  <script src="js/ai.js?v=5"></script>
+  <script src="js/main.js?v=5"></script>
 </body>
 </html>
