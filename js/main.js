@@ -5,6 +5,7 @@
   const G = window.UrGame;
   const B = window.UrBoard;
   const T = window.UrI18n.t;
+  const APP_VERSION = '2.0';
   const SAVE_KEY = 'gameur-save-v1';
   const CFG_KEY = 'gameur-cfg-v1';
 
@@ -398,6 +399,7 @@
   // --- Ініціалізація ---
   function init() {
     loadCfg();
+    document.querySelectorAll('.app-version').forEach((el) => { el.textContent = 'v' + APP_VERSION; });
     layers = B.build(svg);
     layers.hitLayer.addEventListener('click', onCellClick);
 
