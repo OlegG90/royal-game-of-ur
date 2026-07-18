@@ -183,6 +183,7 @@ button { font-family: inherit; }
 #continue-btn { margin-bottom: 10px; }
 
 .menu-links { margin-top: 20px; text-align: center; }
+.game-links { margin-top: 22px; }
 .menu-links .menu-label { margin-bottom: 8px; color: var(--muted2); }
 .link-item {
   display: block;

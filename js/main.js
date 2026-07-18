@@ -410,7 +410,8 @@
       c.addEventListener('click', () => { cfg.side = c.getAttribute('data-side'); saveCfg(); renderMenu(); }));
     $('start-btn').addEventListener('click', newGame);
     continueBtn.addEventListener('click', () => { showScreen('game'); renderAll(); resumeFlow(); });
-    $('rules-btn').addEventListener('click', () => dlgRules.showModal());
+    document.querySelectorAll('.rules-open').forEach((b) =>
+      b.addEventListener('click', () => dlgRules.showModal()));
     dlgRules.querySelector('.dlg-close').addEventListener('click', () => dlgRules.close());
 
     // гра
