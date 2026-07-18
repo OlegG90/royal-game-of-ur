@@ -271,8 +271,12 @@ button { font-family: inherit; }
   text-align: center;
   font-size: 14px;
   color: var(--ink-dim);
-  min-height: 20px;
+  height: 40px; /* фіксовано під 2 рядки — колонка не стрибає від довжини тексту */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: 300;
+  line-height: 1.35;
 }
 
 .dice-card {
@@ -306,9 +310,15 @@ button { font-family: inherit; }
   background: #1c130b;
 }
 .ur-rolling .ur-tri { animation: urshake 0.3s ease-in-out infinite; }
-.dice-result { font-family: var(--font-head); font-size: 14px; color: var(--ink-dim); }
+.dice-result {
+  font-family: var(--font-head);
+  font-size: 14px;
+  color: var(--ink-dim);
+  line-height: 24px; /* висота під .num, щоб рядок не стрибав */
+}
 .dice-result .num { color: var(--gold); font-size: 20px; }
-.dice-result[hidden] { display: none; }
+/* при [hidden] лишаємо місце в потоці — картка не змінює висоту */
+.dice-result[hidden] { display: block; visibility: hidden; }
 
 #roll-btn { height: 56px; }
 #roll-btn.ur-roll { animation: urglow 1.4s ease-in-out infinite; }
