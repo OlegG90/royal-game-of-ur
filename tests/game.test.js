@@ -58,12 +58,12 @@ test('rollDice uses four binary tetrahedra and moves to move phase', () => {
   assert.equal(s.phase, 'move');
 });
 
-test('legalMoves can enter one equivalent piece from start', () => {
+test('legalMoves enters the top piece from the start stack', () => {
   const s = stateWith({ dice: 4 });
   const moves = G.legalMoves(s);
 
   assert.equal(moves.length, 1);
-  assert.deepEqual(plain(moves[0]), { idx: 0, from: G.START, to: 4, capture: null });
+  assert.deepEqual(plain(moves[0]), { idx: 6, from: G.START, to: 4, capture: null });
 });
 
 test('legalMoves rejects landing on own piece', () => {
@@ -174,3 +174,4 @@ test('AI pickMove always returns a legal move at every level', () => {
     assert.ok(moves.includes(picked), `level=${level}`);
   }
 });
+

@@ -58,7 +58,11 @@
       const raw = localStorage.getItem(SAVE_KEY);
       if (!raw) return null;
       const s = JSON.parse(raw);
-      if (validateState(s)) return s;
+      if (validateState(s)) {
+        if (s.mode === 'ai' && s.aiSide === undefined) s.aiSide = 'B';
+        if (s.mode === 'ai' && s.aiLevel === undefined) s.aiLevel = curLevel;
+        return s;
+      }
       localStorage.removeItem(SAVE_KEY);
     } catch (e) { /* ігноруємо биті дані */ }
     return null;
@@ -248,9 +252,7 @@
     const idx = +g.getAttribute('data-idx');
     const pos = S.pieces[p][idx];
     if (p === S.turn) {
-      // пошук за позицією, не за idx: хід зі старту створюється для першої фішки
-      // стосу, а клік влучає у верхню (з іншим idx)
-      const mv = curMoves.find((m) => m.from === pos);
+      const mv = curMoves.find((m) => m.idx === idx);
       if (mv) execMove(mv);
     } else {
       // клік по фішці суперника = хід-збивання на її клітину
@@ -350,4 +352,5 @@
 
   init();
 })();
+
 

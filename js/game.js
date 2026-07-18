@@ -59,10 +59,12 @@
     const occ = occupancy(state);
     const moves = [];
     const seenOrigins = new Set();
+    const topStartIdx = state.pieces[p].lastIndexOf(START);
 
     state.pieces[p].forEach((pos, idx) => {
       if (pos === OFF) return;
-      if (seenOrigins.has(pos)) return; // всі стартові фішки рівнозначні
+      if (pos === START && idx !== topStartIdx) return; // зі стартового стосу рухається верхня фішка
+      if (seenOrigins.has(pos)) return; // дублікати позицій на полі ігноруємо захисно
       seenOrigins.add(pos);
 
       const dest = pos + n;
@@ -124,3 +126,4 @@
     rollDice, legalMoves, applyMove, endTurn,
   };
 })();
+
