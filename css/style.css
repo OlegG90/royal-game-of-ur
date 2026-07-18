@@ -435,6 +435,12 @@ dialog h2 { margin: 0 0 10px; color: var(--gold); font-family: var(--font-head);
 .rules li { margin-bottom: 5px; }
 .rules b { color: var(--gold); }
 
+.intro-text { font-size: 14px; line-height: 1.6; font-weight: 300; }
+.intro-text p { margin: 0 0 10px; }
+.intro-text b { color: var(--gold); font-weight: 600; }
+.intro-links { margin: 14px 0 16px; text-align: center; }
+.intro-links .link-item { margin-bottom: 7px; }
+
 /* --- Компакт для низьких екранів (мобільний landscape) --- */
 @media (orientation: landscape) and (max-height: 540px) {
   #screen-game { padding: 10px 12px calc(12px + env(safe-area-inset-bottom)); }

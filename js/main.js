@@ -414,7 +414,10 @@
     continueBtn.addEventListener('click', () => { showScreen('game'); renderAll(); resumeFlow(); });
     document.querySelectorAll('.rules-open').forEach((b) =>
       b.addEventListener('click', () => dlgRules.showModal()));
-    dlgRules.querySelector('.dlg-close').addEventListener('click', () => dlgRules.close());
+    document.querySelectorAll('.intro-open').forEach((b) =>
+      b.addEventListener('click', () => $('dlg-intro').showModal()));
+    document.querySelectorAll('dialog .dlg-close').forEach((b) =>
+      b.addEventListener('click', () => b.closest('dialog').close()));
 
     // гра
     rollBtn.addEventListener('click', doRollHuman);
