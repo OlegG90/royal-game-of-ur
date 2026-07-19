@@ -5,7 +5,7 @@
   const G = window.UrGame;
   const B = window.UrBoard;
   const T = window.UrI18n.t;
-  const STABLE_VERSION = '2.0';
+  const STABLE_VERSION = '2.5';
   const SAVE_KEY = 'gameur-save-v1';
   const CFG_KEY = 'gameur-cfg-v1';
 
