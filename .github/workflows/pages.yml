@@ -46,15 +46,26 @@ jobs:
           rsync -a --delete \
             --exclude '.git' \
             --exclude '.github' \
+            --exclude '.gitignore' \
+            --exclude 'README.md' \
+            --exclude 'AGENTS.md' \
+            --exclude 'CLAUDE.md' \
             --exclude 'tests' \
             --exclude 'package.json' \
             stable/ site/
           rsync -a --delete \
             --exclude '.git' \
             --exclude '.github' \
+            --exclude '.gitignore' \
+            --exclude 'README.md' \
+            --exclude 'AGENTS.md' \
+            --exclude 'CLAUDE.md' \
             --exclude 'tests' \
             --exclude 'package.json' \
             latest-source/ site/latest/
+          # Єдине джерело версії: підставляємо тег деплою в напис на стабільному корені.
+          # (/latest/ показує 'latest' за шляхом, тож його не чіпаємо.)
+          sed -i "s/const STABLE_VERSION = '[^']*'/const STABLE_VERSION = '${STABLE_TAG#v}'/" site/js/main.js
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

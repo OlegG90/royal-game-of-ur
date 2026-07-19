@@ -5,7 +5,9 @@
   const G = window.UrGame;
   const B = window.UrBoard;
   const T = window.UrI18n.t;
-  const STABLE_VERSION = '2.5';
+  // Локальний fallback: у проді CI підставляє сюди тег STABLE_TAG (див. pages.yml),
+  // тож справжня версія має єдине джерело — тег деплою.
+  const STABLE_VERSION = 'dev';
   const SAVE_KEY = 'gameur-save-v1';
   const CFG_KEY = 'gameur-cfg-v1';
 
@@ -71,7 +73,8 @@
   }
   function versionLabel() {
     const path = window.location.pathname.split('/').filter(Boolean);
-    return path.includes('latest') ? 'latest' : 'v' + STABLE_VERSION;
+    if (path.includes('latest')) return 'latest';
+    return STABLE_VERSION === 'dev' ? 'dev' : 'v' + STABLE_VERSION;
   }
   function validateState(s) {
     if (!s || s.v !== 1) return false;
@@ -320,7 +323,7 @@
     curMoves = [];
     save();
     renderAll();
-    if (ev.win) { showWinner(mover); return; }
+    if (ev.win) { showWinner(); return; }
     if (ev.capture) toast(T('toastCapture', { name: nameOf(mover) }));
     else if (ev.bearOff) toast(T('toastBearOff', { name: nameOf(mover), n: S.pieces[mover].filter((v) => v === G.OFF).length }));
     if (ev.rosette) toast(T('toastRosette', { name: nameOf(mover) }));
