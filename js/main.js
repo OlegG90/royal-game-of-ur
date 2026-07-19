@@ -5,7 +5,7 @@
   const G = window.UrGame;
   const B = window.UrBoard;
   const T = window.UrI18n.t;
-  const APP_VERSION = '2.0';
+  const STABLE_VERSION = '2.0';
   const SAVE_KEY = 'gameur-save-v1';
   const CFG_KEY = 'gameur-cfg-v1';
 
@@ -69,12 +69,17 @@
     return Array.isArray(value) && value.length === G.PIECES &&
       value.every((pos) => Number.isInteger(pos) && pos >= G.START && pos <= G.OFF);
   }
+  function versionLabel() {
+    const path = window.location.pathname.split('/').filter(Boolean);
+    return path.includes('latest') ? 'latest' : 'v' + STABLE_VERSION;
+  }
   function validateState(s) {
     if (!s || s.v !== 1) return false;
     if (s.mode !== 'ai' && s.mode !== 'pvp') return false;
     if (s.turn !== 'A' && s.turn !== 'B') return false;
     if (!['roll', 'move', 'over'].includes(s.phase)) return false;
     if (!s.pieces || !isPieceList(s.pieces.A) || !isPieceList(s.pieces.B)) return false;
+    if (!G.hasValidOccupancy(s)) return false;
     if (s.winner !== null && s.winner !== 'A' && s.winner !== 'B') return false;
     if (s.mode === 'ai' && s.aiSide !== undefined && s.aiSide !== 'A' && s.aiSide !== 'B') return false;
     if (s.mode === 'ai' && s.aiLevel !== undefined && !['easy', 'medium', 'hard'].includes(s.aiLevel)) return false;
@@ -399,7 +404,7 @@
   // --- Ініціалізація ---
   function init() {
     loadCfg();
-    document.querySelectorAll('.app-version').forEach((el) => { el.textContent = 'v' + APP_VERSION; });
+    document.querySelectorAll('.app-version').forEach((el) => { el.textContent = versionLabel(); });
     layers = B.build(svg);
     layers.hitLayer.addEventListener('click', onCellClick);
 

@@ -87,6 +87,16 @@ test('legalMoves blocks capture on central rosette', () => {
   assert.equal(moves.some((m) => m.from === 4 && m.to === 8), false);
 });
 
+test('hasValidOccupancy rejects duplicate pieces on one physical cell', () => {
+  const ownDuplicate = stateWith({ A: [5, 5, 0, 0, 0, 0, 0] });
+  const sharedConflict = stateWith({ A: [7, 0, 0, 0, 0, 0, 0], B: [7, 0, 0, 0, 0, 0, 0] });
+  const privateRowsDoNotConflict = stateWith({ A: [3, 0, 0, 0, 0, 0, 0], B: [3, 0, 0, 0, 0, 0, 0] });
+
+  assert.equal(G.hasValidOccupancy(ownDuplicate), false);
+  assert.equal(G.hasValidOccupancy(sharedConflict), false);
+  assert.equal(G.hasValidOccupancy(privateRowsDoNotConflict), true);
+});
+
 test('legalMoves requires exact roll to bear off', () => {
   const tooFar = stateWith({ dice: 3, A: [13, 0, 0, 0, 0, 0, 0] });
   assert.equal(G.legalMoves(tooFar).some((m) => m.from === 13), false);

@@ -44,6 +44,20 @@
     return map;
   }
 
+  function hasValidOccupancy(state) {
+    if (!state || !state.pieces || !Array.isArray(state.pieces.A) || !Array.isArray(state.pieces.B)) return false;
+    const seen = new Set();
+    for (const p of ['A', 'B']) {
+      for (const pos of state.pieces[p]) {
+        if (pos <= START || pos >= OFF) continue;
+        const cell = cellId(p, pos);
+        if (seen.has(cell)) return false;
+        seen.add(cell);
+      }
+    }
+    return true;
+  }
+
   function rollDice(state, rng) {
     rng = rng || Math.random;
     const marks = [0, 0, 0, 0].map(() => (rng() < 0.5 ? 1 : 0));
@@ -122,7 +136,7 @@
 
   window.UrGame = {
     START, OFF, ROSETTES, PIECES,
-    newState, opponent, cellId, occupancy,
+    newState, opponent, cellId, occupancy, hasValidOccupancy,
     rollDice, legalMoves, applyMove, endTurn,
   };
 })();
