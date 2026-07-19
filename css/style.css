@@ -273,7 +273,7 @@ button { font-family: inherit; }
 .players-row { display: flex; flex-wrap: wrap; gap: 12px; }
 .players-row .player-card { flex: 1 1 220px; }
 
-.game-version { margin-top: 0; text-align: center; }
+.game-version { margin-top: 3px; text-align: left; }
 #board {
   width: 100%;
   display: block;
@@ -286,6 +286,7 @@ button { font-family: inherit; }
   flex: 0 1 300px;
   min-width: 260px;
   display: flex; flex-direction: column; gap: 12px;
+  padding-top: 64px;
 }
 
 .player-card {
@@ -482,7 +483,40 @@ dialog h2 { margin: 0 0 10px; color: var(--gold); font-family: var(--font-head);
 /* Коли права колонка сягає верхнього правого кута вʼюпорта —
    звільняємо місце під фіксований перемикач мови */
 @media (min-width: 640px) and (max-width: 1320px) {
-  #screen-game .side-col { padding-top: 44px; }
+  #screen-game .side-col { padding-top: 64px; }
+}
+
+/* --- Мобільний portrait: усі блоки під дошкою мають однакову ширину --- */
+@media (max-width: 760px) and (orientation: portrait) {
+  #screen-game {
+    align-items: stretch;
+    padding: 18px 16px calc(32px + env(safe-area-inset-bottom));
+  }
+  .game-wrap { max-width: none; margin: 0; }
+  .game-grid {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 18px;
+  }
+  .board-col,
+  .side-col {
+    width: 100%;
+    min-width: 0;
+    flex: none;
+  }
+  .players-row {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+  .players-row .player-card {
+    width: 100%;
+    flex: none;
+    min-height: 76px;
+  }
+  .side-col {
+    padding-top: 0;
+  }
 }
 
 /* --- Компакт для низьких екранів (мобільний landscape) --- */
@@ -494,6 +528,7 @@ dialog h2 { margin: 0 0 10px; color: var(--gold); font-family: var(--font-head);
   .board-panel { padding: 10px; }
   .board-col { gap: 8px; }
   .side-col { gap: 8px; }
+  #screen-game .side-col { padding-top: 0; }
   .player-card { padding: 8px 12px; }
   .dice-card { padding: 10px; gap: 7px; }
   #roll-btn, .btn-gold { height: 46px; }
