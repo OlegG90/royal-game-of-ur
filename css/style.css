@@ -206,6 +206,28 @@ button { font-family: inherit; }
   cursor: pointer;
 }
 
+/* один рядок-заголовок: «Правила & Інтро», обидва слова — лінки */
+.links-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+}
+.links-row .link-item {
+  display: inline;
+  width: auto;
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.links-row .link-item:hover { text-decoration: underline; }
+.links-row .amp {
+  font-size: 12px;
+  color: var(--muted2);
+  letter-spacing: 0.14em;
+}
+
 /* ============ ГРА ============ */
 #screen-game {
   min-height: 100vh;
