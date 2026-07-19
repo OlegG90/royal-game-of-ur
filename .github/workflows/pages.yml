@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  STABLE_TAG: v2.5
+  STABLE_TAG: v2.6
 
 jobs:
   deploy:
