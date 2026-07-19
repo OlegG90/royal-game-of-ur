@@ -1,4 +1,7 @@
 {
+  "name": "royal-game-of-ur",
+  "private": true,
+  "description": "Browser Royal Game of Ur — Finkel's reconstruction (vanilla HTML/CSS/JS)",
   "scripts": {
     "test": "node --test"
   },
