@@ -1,7 +1,7 @@
 {
-  "name": "Королівська гра Ур",
-  "short_name": "Гра Ур",
-  "description": "Шумерська настільна гонка (~2600 р. до н.е.), реконструкція Ірвінга Фінкеля",
+  "name": "Royal Game of Ur",
+  "short_name": "Game of Ur",
+  "description": "A Sumerian race game · c. 2600 BC · Finkel’s reconstruction",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#1c130b",
