@@ -28,7 +28,7 @@
         <div class="menu-label" data-i18n="modeLabel">Режим</div>
         <div class="opt-row">
           <div class="opt-card" data-mode="ai">
-            <div class="opt-emoji">🤖</div><div class="opt-text" data-i18n="vsAIShort">Проти ПК</div>
+            <div class="opt-emoji"><span class="role-badge cpu lvl-medium" id="menu-cpu-badge"><svg viewBox="0 0 24 24"><path d="M12 2.5v3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="2.6" r="1.5" fill="#fff"/><rect x="5" y="7.5" width="14" height="11" rx="3.2" fill="#fff"/><circle cx="9.4" cy="13" r="1.9" fill="#20160c"/><circle cx="14.6" cy="13" r="1.9" fill="#20160c"/></svg></span></div><div class="opt-text" data-i18n="vsAIShort">Проти ПК</div>
           </div>
           <div class="opt-card" data-mode="pvp">
             <div class="opt-emoji">👥</div><div class="opt-text" data-i18n="pvpShort">На двох</div>
@@ -84,20 +84,19 @@
             <svg id="board" role="img" data-i18n-aria="boardAria" aria-label="Дошка гри Ур"></svg>
           </div>
 
-          <div class="players-row">
-            <div class="player-card pc-black" id="card-B">
-              <div class="pc-left">
-                <span class="swatch swB"></span>
-                <div><div class="pc-name" id="name-B"></div><div class="pc-sub" id="sub-B"></div></div>
-              </div>
-              <div class="pc-count"><span id="off-B">0</span><span class="pc-total">/7</span></div>
-            </div>
-            <div class="player-card pc-white" id="card-A">
-              <div class="pc-left">
-                <span class="swatch swA"></span>
-                <div><div class="pc-name" id="name-A"></div><div class="pc-sub" id="sub-A"></div></div>
-              </div>
+          <div class="players-panel">
+            <div class="pp-side pc-white" id="card-A">
+              <span class="swatch swA"></span>
+              <span class="pp-icon" id="icon-A"></span>
+              <div class="pp-meta"><div class="pc-sub" id="sub-A"></div></div>
               <div class="pc-count"><span id="off-A">0</span><span class="pc-total">/7</span></div>
+            </div>
+            <div class="pp-vs">vs</div>
+            <div class="pp-side pc-black end-right" id="card-B">
+              <span class="swatch swB"></span>
+              <span class="pp-icon" id="icon-B"></span>
+              <div class="pp-meta"><div class="pc-sub" id="sub-B"></div></div>
+              <div class="pc-count"><span id="off-B">0</span><span class="pc-total">/7</span></div>
             </div>
           </div>
 

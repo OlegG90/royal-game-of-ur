@@ -2,6 +2,9 @@
 (function () {
   'use strict';
 
+  const ROBOT_SVG = '<svg viewBox="0 0 24 24"><path d="M12 2.5v3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="2.6" r="1.5" fill="#fff"/><rect x="5" y="7.5" width="14" height="11" rx="3.2" fill="#fff"/><circle cx="9.4" cy="13" r="1.9" fill="#20160c"/><circle cx="14.6" cy="13" r="1.9" fill="#20160c"/></svg>';
+  const PERSON_SVG = '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6" fill="#c9b389"/><path d="M5 19c0-3.6 3.1-6 7-6s7 2.4 7 6" fill="#c9b389"/></svg>';
+
   const G = window.UrGame;
   const B = window.UrBoard;
   const T = window.UrI18n.t;
@@ -139,6 +142,8 @@
       b.classList.toggle('active', b.getAttribute('data-level') === cfg.level));
     document.querySelectorAll('#screen-menu [data-side]').forEach((c) =>
       c.classList.toggle('sel', c.getAttribute('data-side') === cfg.side));
+    const mb = $('menu-cpu-badge');
+    if (mb) mb.className = 'role-badge cpu lvl-' + cfg.level;
     continueBtn.hidden = !(S && !S.winner);
   }
 
@@ -199,6 +204,7 @@
         x: c.x - B.CELL / 2, y: c.y - B.CELL / 2, width: B.CELL, height: B.CELL, rx: 6,
         class: 'dest' + (cap ? ' cap' : ''),
       }, layers.hlLayer);
+      B.el('circle', { cx: c.x, cy: c.y, r: 9, class: 'dest-dot' + (cap ? ' cap' : '') }, layers.hlLayer);
       r.addEventListener('click', () => execMove(mv));
     }
   }
@@ -253,11 +259,22 @@
   function renderCards() {
     for (const p of ['A', 'B']) {
       const isCpu = S.mode === 'ai' && p === aiSide();
-      $('name-' + p).textContent = S.mode === 'pvp'
+      // Іконка-бейдж ролі: людина (нейтральний) / робот у квадраті з кольором складності.
+      const icon = $('icon-' + p);
+      if (icon) {
+        icon.innerHTML = isCpu
+          ? '<span class="role-badge cpu lvl-' + S.aiLevel + '">' + ROBOT_SVG + '</span>'
+          : '<span class="role-badge human">' + PERSON_SVG + '</span>';
+      }
+      const fullName = S.mode === 'pvp'
         ? T(p === 'A' ? 'white' : 'black')
         : (isCpu ? T(p === 'A' ? 'cpuWhite' : 'cpuBlack') : T(p === 'A' ? 'youWhite' : 'youBlack'));
-      $('sub-' + p).textContent = isCpu
-        ? T('diffSub', { level: T(levelKey(S.aiLevel)).toLowerCase() }) : '';
+      // Складність тепер кодується кольором бейджа — текст прибрано (не перетинається).
+      $('card-' + p).title = isCpu
+        ? fullName + ' · ' + T('diffSub', { level: T(levelKey(S.aiLevel)).toLowerCase() })
+        : fullName;
+      const sub = $('sub-' + p);
+      if (sub) sub.textContent = '';
       $('off-' + p).textContent = S.pieces[p].filter((v) => v === G.OFF).length;
       $('card-' + p).classList.toggle('active', S.turn === p && !S.winner);
     }
